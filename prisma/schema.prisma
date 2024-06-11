@@ -1,0 +1,34 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Mood      Mood[]
+}
+
+model Mood {
+  id     String @id @default(cuid())
+  userId String
+
+  date       DateTime @default(now())
+  mood       String
+  stress     Int
+  energy     Int
+  well       String   @db.Text
+  notWell    String   @db.Text
+  feel       Int
+  activities String   @db.Text
+  grateful   String   @db.Text
+  user       User     @relation(fields: [userId], references: [id])
+}
