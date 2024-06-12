@@ -1,6 +1,6 @@
 import NextCrypto from "next-crypto";
 
-const encryptionToken = process.env.ENCRYPTION_TOKEN;
+const encryptionToken = process.env.NEXT_PUBLIC_ENCRYPTION_TOKEN;
 
 const crypto = new NextCrypto(encryptionToken || "secret key");
 
