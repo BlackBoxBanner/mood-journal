@@ -9,7 +9,7 @@ export type Session = {
 	email: string;
 };
 
-const authSecret = process.env.NEXT_PUBLIC_AUTH_SECRET;
+const authSecret = process.env.AUTH_SECRET;
 
 if (!authSecret) {
 	throw new Error("AUTH_SECRET is not set");
