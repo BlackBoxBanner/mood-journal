@@ -5,6 +5,7 @@ import { Sidebar } from "@/app/dashboard/components/Sidebar";
 import React from "react";
 import { getSession } from "@/lib/auth";
 import SheetSidebar from "./components/SheetSidebar";
+import Icon from "@/components/icon";
 
 const DashboardLayout = async ({
 	children,
@@ -29,7 +30,8 @@ const DashboardLayout = async ({
 					<div className="lg:hidden flex">
 						<SheetSidebar email={email} />
 					</div>
-					<Link href="/">
+					<Link href="/" className="flex items-center justify-center gap-2">
+						<Icon className="w-6" />
 						<h1>{`Mood Journal`}</h1>
 					</Link>
 				</div>

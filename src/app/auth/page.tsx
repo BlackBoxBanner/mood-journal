@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import AuthenticationSelection from "@/app/auth/components/AuthenticationSelection";
+import Icon from "@/components/icon";
 
 const motto = [
 	"Welcome to Mood Journal! Your personal space to reflect on your emotions. Sign up or log in to begin your journey.",
@@ -26,6 +27,7 @@ const AuthPage = () => {
 					<AuthenticationSelection />
 				</section>
 				<section className="bg-foreground text-primary-foreground flex justify-center items-start flex-col p-8 py-16 lg:py-0 lg:px-16">
+					<Icon className="w-16 lg:w-24" />
 					<h2 className="text-[3rem] mb-4">Mood Journal</h2>
 					<p>{motto[Math.floor(Math.random() * motto.length)]}</p>
 				</section>

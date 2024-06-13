@@ -1,3 +1,4 @@
+import Icon from "@/components/icon";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,13 +16,15 @@ const Home = async () => {
 					"flex justify-between items-center sticky top-0 backdrop-blur bg-background lg:bg-transparent px-8 py-4 z-10 shadow-md text-lg"
 				)}
 			>
-				<Link href="/">
+				<Link href="/" className="flex gap-2 items-center justify-center">
+					<Icon className="w-6" />
 					<h1>{`Mood Journal`}</h1>
 				</Link>
 				<ModeToggle />
 			</header>
 			<div className="h-full flex justify-center items-center flex-col p-8 gap-8">
-				<div className="text-[2rem] sm:text-[4rem] text-center">
+				<div className="text-[2rem] sm:text-[4rem] text-center flex items-center justify-center gap-4 font-light">
+					<Icon className="w-14" />
 					Mood Journal
 				</div>
 				<Link href={"/auth"} legacyBehavior passHref prefetch={false}>

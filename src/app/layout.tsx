@@ -30,13 +30,6 @@ export const metadata: Metadata = {
 	title: "Mood Journal - Track Your Emotional Well-being",
 	description:
 		"Mood Journal is your personal space to record your mood, energy levels, and stress. Track what works and what doesn't in managing your emotional well-being with our easy-to-use journal.",
-	openGraph: {
-		description:
-			"Mood Journal is your personal space to record your mood, energy levels, and stress. Track what works and what doesn't in managing your emotional well-being with our easy-to-use journal.",
-		images: "/openGraph.png",
-		locale: "th_TH",
-		type: "website",
-	},
 
 	generator: "Next.js",
 	applicationName: "Mood Journal",
