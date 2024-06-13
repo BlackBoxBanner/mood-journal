@@ -1,11 +1,10 @@
 import { ModeToggle } from "@/components/theme-toggle";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { Sidebar } from "@/app/dashboard/components/Sidebar";
 import React from "react";
 import { getSession } from "@/lib/auth";
+import SheetSidebar from "./components/SheetSidebar";
 
 const DashboardLayout = async ({
 	children,
@@ -28,14 +27,7 @@ const DashboardLayout = async ({
 			>
 				<div className="flex justify-center gap-4">
 					<div className="lg:hidden flex">
-						<Sheet>
-							<SheetTrigger>
-								<HamburgerMenuIcon />
-							</SheetTrigger>
-							<SheetContent side={"left"}>
-								<Sidebar email={email} />
-							</SheetContent>
-						</Sheet>
+						<SheetSidebar email={email} />
 					</div>
 					<Link href="/">
 						<h1>{`Mood Journal`}</h1>

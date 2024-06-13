@@ -24,7 +24,13 @@ const path: NavPath[] = [
 	},
 ];
 
-export const Sidebar = ({ email }: { email: Readonly<string> }) => {
+export const Sidebar = ({
+	email,
+	onClick,
+}: {
+	email: Readonly<string>;
+	onClick?: () => void;
+}) => {
 	// const session = await getSession();
 	const pathname = usePathname();
 
@@ -52,6 +58,7 @@ export const Sidebar = ({ email }: { email: Readonly<string> }) => {
 							<Button
 								className="w-full rounded-none flex justify-between h-12 px-8 gap-4 text-base font-normal"
 								variant={"ghost"}
+								onClick={onClick}
 							>
 								{item.title}
 								{pathname === item.path && (
