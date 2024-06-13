@@ -2,7 +2,11 @@ import NextCrypto from "next-crypto";
 
 const encryptionToken = process.env.NEXT_PUBLIC_ENCRYPTION_TOKEN;
 
-const crypto = new NextCrypto(encryptionToken || "secret key");
+if (!encryptionToken) {
+	throw new Error("Encryption token is missing");
+}
+
+const crypto = new NextCrypto(encryptionToken);
 
 export const encrypt = async <T>(data: T) => {
 	return crypto.encrypt(JSON.stringify(data));
