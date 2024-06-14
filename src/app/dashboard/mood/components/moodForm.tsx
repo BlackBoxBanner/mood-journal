@@ -35,8 +35,15 @@ import {format, isAfter, isValid,} from "date-fns";
 import {createMoodAction, editMoodAction} from "./mood-action";
 import {encrypt} from "@/lib/crypto";
 import {useRouter, useSearchParams} from "next/navigation";
-import {Mood} from "@prisma/client";
+import {type Mood} from "@prisma/client";
 import {useToast} from "@/components/ui/use-toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 
 const moodFormSchema = z.object({
   mood: z.string().min(1, "Please select a mood"),
@@ -224,12 +231,21 @@ const MoodForm = ({callbackPath = "/dashboard/mood", userId, method = "create", 
                   <FormItem className="col-span-4 lg:col-span-1">
                     <FormLabel>{`What activities did you do today?`}</FormLabel>
                     <FormControl>
-                      <MultiValueInput
-                        defaultValue={field.value}
-                        repeatable={false}
-                        onChanges={field.onChange}
-                        placeholder="Activity"
-                      />
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <MultiValueInput
+                              defaultValue={field.value}
+                              repeatable={false}
+                              onChanges={field.onChange}
+                              placeholder="Activity"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Press enter/tap/space-bar to regis the activity.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </FormControl>
                     <FormMessage/>
                   </FormItem>
@@ -252,6 +268,7 @@ const MoodForm = ({callbackPath = "/dashboard/mood", userId, method = "create", 
                         type="number"
                         min={1}
                         max={10}
+                        inputMode={"numeric"}
                       />
                     </FormControl>
                     <FormMessage/>
@@ -275,6 +292,7 @@ const MoodForm = ({callbackPath = "/dashboard/mood", userId, method = "create", 
                         type="number"
                         min={1}
                         max={10}
+                        inputMode={"numeric"}
                       />
                     </FormControl>
                     <FormMessage/>
