@@ -34,7 +34,7 @@ const MoodPage = async () => {
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 			{user.Mood.map((mood) => {
 				return (
-					<Link href={`/dashboard/mood/${mood.id}`}>
+					<Link key={mood.id} href={`/dashboard/mood/${mood.id}`}>
 						<Card>
 							<CardHeader>
 								<CardTitle>{format(new Date(mood.date), "PPP")}</CardTitle>

@@ -337,7 +337,7 @@ const Calendar = ({ events = [], options, onSelectDate }: CalendarProps) => {
 
 	useEffect(() => {
 		onSelectDate ? onSelectDate(selectedDate) : null;
-	}, [selectedDate]);
+	}, [selectedDate, onSelectDate]);
 
 	return (
 		<section className=" border">
