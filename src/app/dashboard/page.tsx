@@ -6,6 +6,9 @@ import { Mood } from "@prisma/client";
 import EnergyAndStressLevelChart from "@/app/dashboard/components/EnergyAndStressLevelChart";
 import MoodOverTimeChart from "@/app/dashboard/components/MoodOverTimeChart";
 import { differenceInDays, addDays, format, isSameDay } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import RefreshPageButton from "./components/refreshPageButton";
 
 const DashboardPage = async () => {
 	const session = await getSession();
@@ -33,6 +36,9 @@ const DashboardPage = async () => {
 
 	return (
 		<div className="flex flex-col gap-8">
+			<div className="flex justify-end items-center">
+				<RefreshPageButton />
+			</div>
 			<EnergyAndStressLevelChart moods={chartMoodData} />
 			<MoodOverTimeChart moods={chartMoodData} />
 		</div>

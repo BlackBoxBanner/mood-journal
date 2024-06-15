@@ -88,6 +88,7 @@ const EnergyAndStressLevelChart = ({
 							</TableHeader>
 							<TableBody>
 								{reversedMoods.map((mood) => {
+									if (!mood.energy || !mood.stress || !mood.mood) return null;
 									return (
 										<TableRow key={mood.id}>
 											<TableCell>
