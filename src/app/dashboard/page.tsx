@@ -1,11 +1,10 @@
 import { getSession } from "@/lib/auth";
 import { permanentRedirect } from "next/navigation";
 import { getUniqueUser } from "@/lib/prisma/query/user";
-import { format } from "date-fns";
 import { getManyMood } from "@/lib/prisma/query/mood";
 import { Mood } from "@prisma/client";
-import LineChart from "@/components/chart/line";
-import { LineChartProps } from "@/components/chart";
+import EnergyAndStressLevelChart from "@/app/dashboard/components/EnergyAndStressLevelChart";
+import MoodOverTimeChart from "@/app/dashboard/components/MoodOverTimeChart";
 
 const DashboardPage = async () => {
 	const session = await getSession();
@@ -30,6 +29,19 @@ const DashboardPage = async () => {
 		},
 	});
 
+	const chartMoodData = prepareData(moods);
+
+	return (
+		<div className="flex flex-col gap-8">
+			<EnergyAndStressLevelChart moods={chartMoodData} />
+			<MoodOverTimeChart moods={chartMoodData} />
+		</div>
+	);
+};
+
+export default DashboardPage;
+
+const prepareData = (moods: Readonly<Mood[]>) => {
 	function addDays(date: Date, days: number): Date {
 		const result = new Date(date);
 		result.setDate(result.getDate() + days);
@@ -52,50 +64,28 @@ const DashboardPage = async () => {
 		moods.map((mood) => [mood.date.toISOString().split("T")[0], mood])
 	);
 
-	const chartMoodData: Mood[] = dateArray.map((date) => {
-		const dateString = date.toISOString().split("T")[0];
-		if (moodMap.has(dateString)) {
-			return moodMap.get(dateString) as Mood;
-		} else {
-			// Fill with default mood data
-			return {
-				id: "",
-				userId: user.id,
-				date: date,
-				mood: "neutral", // or any default value
-				stress: 0, // or any default value
-				energy: 0, // or any default value
-				well: "",
-				notWell: "",
-				feel: 0, // or any default value
-				activities: "",
-				grateful: "",
-			};
+	const chartMoodData: Partial<Omit<Mood, "userId">>[] = dateArray.map(
+		(date) => {
+			const dateString = date.toISOString().split("T")[0];
+			if (moodMap.has(dateString)) {
+				return moodMap.get(dateString) as Mood;
+			} else {
+				// Fill with default mood data
+				return {
+					id: "",
+					date: date,
+					mood: undefined, // or any default value
+					stress: NaN, // or any default value
+					energy: NaN, // or any default value
+					well: "",
+					notWell: "",
+					feel: NaN, // or any default value
+					activities: "",
+					grateful: "",
+				};
+			}
 		}
-	});
-
-	const stressLevelBarChart: LineChartProps = {
-		labels: chartMoodData.map((mood) => {
-			console.log(mood);
-			return format(mood.date, "d");
-		}),
-		datasets: [
-			{
-				label: "Stress",
-				data: chartMoodData.map((v) => v.stress),
-			},
-			{
-				label: "Energy",
-				data: chartMoodData.map((v) => v.energy),
-			},
-		],
-	};
-	return (
-		<div>
-			<h1>Dashboard</h1>
-			<LineChart {...stressLevelBarChart} />
-		</div>
 	);
-};
 
-export default DashboardPage;
+	return chartMoodData;
+};

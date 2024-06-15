@@ -23,7 +23,7 @@ const DashboardLayout = async ({
 		>
 			<header
 				className={cn(
-					"flex justify-between items-center sticky top-0 backdrop-blur bg-background lg:bg-transparent px-8 py-4 z-10 shadow text-lg col-span-2 border-b"
+					"flex justify-between items-center sticky top-0 backdrop-blur-sm bg-background lg:bg-transparent px-8 py-4 z-10 shadow text-lg col-span-2 border-b"
 				)}
 			>
 				<div className="flex justify-center gap-4">
