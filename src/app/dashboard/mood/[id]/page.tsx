@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUniqueUser } from "@/lib/prisma/query/user";
-import { getUniqueMood } from "@/lib/prisma/query/mood";
+import { getUniqueMood, updateNewStatus } from "@/lib/prisma/query/mood";
 import { Mood } from "@prisma/client";
 import { binaryToFeels } from "@/lib/feel";
 import { Progress } from "@/components/ui/progress";
@@ -38,6 +38,10 @@ const MoodPageWithDetail = async ({
 
 	if (!mood || mood.userId !== user.id) {
 		return redirect("/dashboard/mood");
+	}
+
+	if (mood.isNew) {
+		await updateNewStatus(mood.id);
 	}
 
 	return (

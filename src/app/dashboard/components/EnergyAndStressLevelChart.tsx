@@ -27,6 +27,8 @@ const EnergyAndStressLevelChart = ({
 }: {
 	moods: Partial<Omit<Mood, "userId">>[];
 }) => {
+	const reversedMoods = moods.slice().reverse();
+
 	const stressLevelBarChart: LineChartProps = {
 		labels: moods.map((mood) => {
 			return format(mood.date ? mood.date : new Date(), "d/M");
@@ -71,27 +73,10 @@ const EnergyAndStressLevelChart = ({
 									},
 								},
 								responsive: true,
-								plugins: {
-									// zoom: {
-									// 	pan: {
-									// 		enabled: true,
-									// 		mode: "x",
-									// 	},
-									// 	zoom: {
-									// 		pinch: {
-									// 			enabled: true, // Enable pinch zooming
-									// 		},
-									// 		wheel: {
-									// 			enabled: true, // Enable wheel zooming
-									// 		},
-									// 		mode: "x",
-									// 	},
-									// },
-								},
 							}}
 						/>
 					</div>
-					<div className="max-h-[12rem] md:max-h-[16rem] lg:max-h-[24rem] overflow-auto">
+					<div className="min-w-[20rem] max-h-[12rem] md:max-h-[16rem] lg:max-h-[24rem] overflow-auto relative">
 						<Table>
 							<TableHeader>
 								<TableRow>
@@ -102,7 +87,7 @@ const EnergyAndStressLevelChart = ({
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{moods.map((mood) => {
+								{reversedMoods.map((mood) => {
 									return (
 										<TableRow key={mood.id}>
 											<TableCell>

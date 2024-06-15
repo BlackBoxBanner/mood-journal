@@ -5,6 +5,7 @@ import { getManyMood } from "@/lib/prisma/query/mood";
 import { Mood } from "@prisma/client";
 import EnergyAndStressLevelChart from "@/app/dashboard/components/EnergyAndStressLevelChart";
 import MoodOverTimeChart from "@/app/dashboard/components/MoodOverTimeChart";
+import { differenceInDays, addDays, format, isSameDay } from "date-fns";
 
 const DashboardPage = async () => {
 	const session = await getSession();
@@ -20,12 +21,11 @@ const DashboardPage = async () => {
 	if (!user) return permanentRedirect("/");
 
 	const moods = await getManyMood({
-		take: 30,
 		where: {
 			userId: user.id,
 		},
 		orderBy: {
-			date: "asc",
+			date: "desc",
 		},
 	});
 
@@ -41,51 +41,50 @@ const DashboardPage = async () => {
 
 export default DashboardPage;
 
-const prepareData = (moods: Readonly<Mood[]>) => {
-	function addDays(date: Date, days: number): Date {
-		const result = new Date(date);
-		result.setDate(result.getDate() + days);
-		return result;
-	}
+const prepareData = (
+	moods: Readonly<Mood[]>,
+	duration = 30
+): Partial<Mood>[] => {
+	if (moods.length === 0) return [];
 
-	const startDate = new Date(moods[0] ? moods[0].date : new Date());
-	const endDate = new Date(
-		moods[0] ? moods[moods.length - 1].date : new Date()
-	);
-	const dateArray: Date[] = [];
-	let currentDate = startDate;
+	const lastDate = new Date();
+	const firstDate = duration
+		? addDays(lastDate, -duration)
+		: moods[moods.length - 1].date;
+	const totalDays = differenceInDays(lastDate, firstDate) + 1;
 
-	while (currentDate <= endDate) {
-		dateArray.push(new Date(currentDate));
-		currentDate = addDays(currentDate, 1);
-	}
+	const filledData: Partial<Mood>[] = [];
+	const moodMap = new Map<string, Mood>();
 
-	const moodMap = new Map<string, Mood>(
-		moods.map((mood) => [mood.date.toISOString().split("T")[0], mood])
-	);
+	// Fill the moodMap with existing mood data
+	moods.forEach((mood) => {
+		const dateStr = format(mood.date, "yyyy-MM-dd");
+		moodMap.set(dateStr, mood);
+	});
 
-	const chartMoodData: Partial<Omit<Mood, "userId">>[] = dateArray.map(
-		(date) => {
-			const dateString = date.toISOString().split("T")[0];
-			if (moodMap.has(dateString)) {
-				return moodMap.get(dateString) as Mood;
-			} else {
-				// Fill with default mood data
-				return {
-					id: "",
-					date: date,
-					mood: undefined, // or any default value
-					stress: NaN, // or any default value
-					energy: NaN, // or any default value
-					well: "",
-					notWell: "",
-					feel: NaN, // or any default value
-					activities: "",
-					grateful: "",
-				};
-			}
+	// Iterate over the range of dates and fill in missing data
+	for (let i = 0; i < totalDays; i++) {
+		const currentDate = addDays(firstDate, i);
+		const dateStr = format(currentDate, "yyyy-MM-dd");
+
+		if (moodMap.has(dateStr)) {
+			filledData.push(moodMap.get(dateStr) as Partial<Mood>);
+		} else {
+			filledData.push({
+				id: "",
+				date: currentDate,
+				mood: undefined,
+				stress: NaN,
+				energy: NaN,
+				well: "",
+				notWell: "",
+				feel: NaN,
+				activities: "",
+				grateful: "",
+				isNew: true,
+			});
 		}
-	);
+	}
 
-	return chartMoodData;
+	return filledData;
 };

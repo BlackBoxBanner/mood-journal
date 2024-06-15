@@ -30,5 +30,6 @@ model Mood {
   feel       Int
   activities String   @db.Text
   grateful   String   @db.Text
+  isNew      Boolean  @default(true)
   user       User     @relation(fields: [userId], references: [id])
 }
