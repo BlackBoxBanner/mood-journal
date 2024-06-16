@@ -1,3 +1,5 @@
+"use server";
+
 import { decrypt } from "@/lib/crypto";
 import { cookies } from "next/headers";
 import { getIronSession } from "iron-session";
