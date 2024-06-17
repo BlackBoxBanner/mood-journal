@@ -46,11 +46,11 @@ const MoodOverTimeChart = ({
 									y: {
 										type: "category",
 										labels: [
-											"very happy",
+											"very-happy",
 											"happy",
 											"normal",
 											"sad",
-											"very sad",
+											"very-sad",
 										],
 									},
 								},
